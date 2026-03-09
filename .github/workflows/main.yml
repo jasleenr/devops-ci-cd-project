@@ -14,3 +14,5 @@ jobs:
 
       - name: Run Script
         run: echo "CI/CD Pipeline Working Successfully"
+            - name: List Files
+      run: ls -la
