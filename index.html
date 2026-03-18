@@ -1,68 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Women Safety Alert</title>
+  <title>Women Safety Alert</title>
 
-<style>
-body{
-font-family: Arial;
-text-align:center;
-margin-top:100px;
-}
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+    }
 
-button{
-background:red;
-color:white;
-padding:20px;
-font-size:20px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
+    button {
+      background: red;
+      color: white;
+      padding: 20px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
 
-button:hover{
-background:darkred;
-}
-</style>
-
+    button:hover {
+      background: darkred;
+    }
+  </style>
 </head>
 
 <body>
 
-<h1>Women Safety SOS Alert System</h1>
+  <h1>Women Safety SOS Alert System</h1>
 
-<p>Click the button below in case of emergency</p>
+  <p>Click the button below in case of emergency</p>
 
-<button onclick="sendAlert()">SOS</button>
+  <button onclick="sendSOS()">🚨 SOS</button>
 
-<p id="msg"></p>
+  <p id="msg"></p>
 
-<script>
+  <script>
+    function sendSOS() {
 
-function sendAlert(){
+      document.getElementById("msg").innerHTML =
+        "🚨 Emergency Alert Sent! Opening your location...";
 
-document.getElementById("msg").innerHTML =
-"⚠ Emergency Alert Sent! Call Women Helpline: 1091";
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
 
-if(navigator.geolocation){
+          let lat = position.coords.latitude;
+          let lon = position.coords.longitude;
 
-navigator.geolocation.getCurrentPosition(function(position){
+          let mapLink = "https://www.google.com/maps?q=" + lat + "," + lon;
 
-let lat = position.coords.latitude;
-let lon = position.coords.longitude;
+          window.open(mapLink, "_blank");
 
-let mapLink =
-"https://www.google.com/maps?q=" + lat + "," + lon;
-
-window.open(mapLink);
-
-});
-
-}
-
-}
-
-</script>
+        });
+      } else {
+        alert("Geolocation not supported");
+      }
+    }
+  </script>
 
 </body>
 </html>
