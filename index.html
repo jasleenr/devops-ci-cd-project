@@ -1,63 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Women Safety Alert</title>
-
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      margin-top: 100px;
-    }
-
-    button {
-      background: red;
-      color: white;
-      padding: 20px;
-      font-size: 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: darkred;
-    }
-  </style>
+  <title>Women Safety SOS</title>
 </head>
-
 <body>
 
-  <h1>Women Safety SOS Alert System</h1>
+<h2>Women Safety App 🚨</h2>
 
-  <p>Click the button below in case of emergency</p>
+<button onclick="sendSOS()">🚨 SOS</button>
 
-  <button onclick="sendSOS()">🚨 SOS</button>
+<p id="status"></p>
 
-  <p id="msg"></p>
+<audio id="siren" src="https://www.soundjay.com/button/beep-07.wav"></audio>
 
-  <script>
-    function sendSOS() {
+<hr>
 
-      document.getElementById("msg").innerHTML =
-        "🚨 Emergency Alert Sent! Opening your location...";
+<h3>Add Emergency Contact</h3>
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="phone" placeholder="Phone Number">
+<button onclick="saveContact()">Save</button>
 
-          let lat = position.coords.latitude;
-          let lon = position.coords.longitude;
+<ul id="contactList"></ul>
 
-          let mapLink = "https://www.google.com/maps?q=" + lat + "," + lon;
+<script>
+function sendSOS() {
+  document.getElementById("siren").play();
 
-          window.open(mapLink, "_blank");
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    document.getElementById("status").innerHTML = "Geolocation not supported";
+  }
+}
 
-        });
-      } else {
-        alert("Geolocation not supported");
-      }
-    }
-  </script>
+function showPosition(position) {
+  let lat = position.coords.latitude;
+  let long = position.coords.longitude;
+
+  let message = "🚨 I am in danger! My location: https://maps.google.com/?q=" 
+                + lat + "," + long;
+
+  document.getElementById("status").innerHTML = message;
+}
+
+function saveContact() {
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+
+  let contact = { name, phone };
+
+  let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+  contacts.push(contact);
+
+  localStorage.setItem("contacts", JSON.stringify(contacts));
+
+  displayContacts();
+}
+
+function displayContacts() {
+  let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+  let list = document.getElementById("contactList");
+
+  list.innerHTML = "";
+
+  contacts.forEach(c => {
+    let li = document.createElement("li");
+    li.textContent = c.name + " - " + c.phone;
+    list.appendChild(li);
+  });
+}
+
+window.onload = displayContacts;
+</script>
 
 </body>
 </html>
