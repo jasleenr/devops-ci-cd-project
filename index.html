@@ -2,7 +2,40 @@
 <html>
 <head>
   <title>Women Safety SOS</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #f5f5f5;
+    }
+
+    h2 {
+      color: #e91e63;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      background: #ff4d4d;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px;
+    }
+
+    ul {
+      list-style: none;
+    }
+  </style>
 </head>
+
 <body>
 
 <h2>Women Safety App 🚨</h2>
@@ -27,6 +60,8 @@
 function sendSOS() {
   document.getElementById("siren").play();
 
+  alert("🚨 SOS Activated!");
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
@@ -42,6 +77,15 @@ function showPosition(position) {
                 + lat + "," + long;
 
   document.getElementById("status").innerHTML = message;
+
+  // Fake SMS system
+  let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+
+  contacts.forEach(c => {
+    let msg = document.createElement("p");
+    msg.textContent = "📩 Sending alert to " + c.name + " (" + c.phone + ")";
+    document.body.appendChild(msg);
+  });
 }
 
 function saveContact() {
